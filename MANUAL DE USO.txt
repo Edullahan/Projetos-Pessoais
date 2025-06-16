@@ -1,0 +1,17 @@
+para realizar executar o programa, basta clicar 2x sobre o ícone do executável e seguir as instruções em tela.
+
+Algumas Regras a serem seguidas:
+
+-Utilizar Login: Ricardo  Senha: 123
+-utilizar o teclado numérico do teclado
+
+-selecionar apenas as opções em tela, do contrário aparecerá "opção inválida" e o app irá pedir que selecione novamente
+
+-Após realizar o cadastro da empresa, e caso queira exibir seus dados, utilize a segunda opção "exibir empresas"
+
+-Caso tenha cadastrado mais de uma, o app exibirá todas em ordem de cadastro
+
+-Para calcular seus gastos semestrais, utilize a terceira opção "calcular gastos"
+
+Uma boa experiência e bem vindo ao Echo Devs!
+

@@ -1,0 +1,223 @@
+-------------Código fonte-----------------
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <locale.h>
+
+#define MAX_EMPRESAS 100
+#define MAX_USUARIOS 10
+
+typedef struct {
+    char Login[50];
+    char Senha[50];
+} Usuario;
+
+typedef struct {
+    char cnpj[20];
+    char nomeFantasia[50];
+    char razaoSocial[50];
+    char telefone[15];
+    char enderecoRua[50];
+    char enderecoBairro[30];
+    char enderecoCidade[30];
+    char enderecoEstado[3];
+    char enderecoCep[10];
+    char email[50];
+    char dataAbertura[12];
+    char descricao[100];
+    float gastos[12];
+    int insumos[12];
+} Empresa;
+
+Usuario usuarios[MAX_USUARIOS] = {{"Ricardo", "123"}};
+Empresa empresas[MAX_EMPRESAS];
+int totalEmpresas = 0;
+
+void cadastrarEmpresa(Empresa empresas[], int *totalEmpresas) {
+    if (*totalEmpresas >= MAX_EMPRESAS) {
+        printf("Número máximo de empresas atingido.\n");
+        return;
+    }
+
+    Empresa *empresa = &empresas[*totalEmpresas];
+
+    printf("Cadastro de Empresa:\n");
+    printf("CNPJ: ");
+    fgets(empresa->cnpj, sizeof(empresa->cnpj), stdin);
+    strtok(empresa->cnpj, "\n");
+
+    printf("Nome Fantasia: ");
+    fgets(empresa->nomeFantasia, sizeof(empresa->nomeFantasia), stdin);
+    strtok(empresa->nomeFantasia, "\n");
+
+    printf("Razão Social: ");
+    fgets(empresa->razaoSocial, sizeof(empresa->razaoSocial), stdin);
+    strtok(empresa->razaoSocial, "\n");
+
+    printf("Telefone: ");
+    fgets(empresa->telefone, sizeof(empresa->telefone), stdin);
+    strtok(empresa->telefone, "\n");
+
+    printf("Endereço (Rua): ");
+    fgets(empresa->enderecoRua, sizeof(empresa->enderecoRua), stdin);
+    strtok(empresa->enderecoRua, "\n");
+
+    printf("Endereço (Bairro): ");
+    fgets(empresa->enderecoBairro, sizeof(empresa->enderecoBairro), stdin);
+    strtok(empresa->enderecoBairro, "\n");
+
+    printf("Endereço (Cidade): ");
+    fgets(empresa->enderecoCidade, sizeof(empresa->enderecoCidade), stdin);
+    strtok(empresa->enderecoCidade, "\n");
+
+    printf("Endereço (Estado - UF): ");
+    fgets(empresa->enderecoEstado, sizeof(empresa->enderecoEstado), stdin);
+    strtok(empresa->enderecoEstado, "\n");
+
+    printf("Endereço (CEP): ");
+    fgets(empresa->enderecoCep, sizeof(empresa->enderecoCep), stdin);
+    strtok(empresa->enderecoCep, "\n");
+
+    printf("Email: ");
+    fgets(empresa->email, sizeof(empresa->email), stdin);
+    strtok(empresa->email, "\n");
+
+    printf("Data de Abertura (dd/mm/aaaa): ");
+    fgets(empresa->dataAbertura, sizeof(empresa->dataAbertura), stdin);
+    strtok(empresa->dataAbertura, "\n");
+
+    printf("Descrição da Empresa: ");
+    fgets(empresa->descricao, sizeof(empresa->descricao), stdin);
+    strtok(empresa->descricao, "\n");
+
+    getchar(); // Limpa o buffer do teclado
+    (*totalEmpresas)++;
+    printf("Empresa cadastrada com sucesso!\n");
+}
+
+void exibirEmpresas(Empresa empresas[], int totalEmpresas) {
+    if (totalEmpresas == 0) {
+        printf("Nenhuma empresa cadastrada.\n");
+        return;
+    }
+
+    printf("\n--- Empresas Cadastradas ---\n");
+    for (int i = 0; i < totalEmpresas; i++) {
+        Empresa *empresa = &empresas[i];
+        printf("\nEmpresa %d:\n", i + 1);
+        printf("CNPJ: %s\n", empresa->cnpj);
+        printf("Nome Fantasia: %s\n", empresa->nomeFantasia);
+        printf("Razão Social: %s\n", empresa->razaoSocial);
+        printf("Telefone: %s\n", empresa->telefone);
+        printf("Endereço: %s, Bairro %s, Cidade %s, Estado %s, CEP %s\n",
+               empresa->enderecoRua, empresa->enderecoBairro, empresa->enderecoCidade,
+               empresa->enderecoEstado, empresa->enderecoCep);
+        printf("Email: %s\n", empresa->email);
+        printf("Data de Abertura: %s\n", empresa->dataAbertura);
+        printf("Descrição: %s\n", empresa->descricao);
+    }
+}
+
+void calcularGastos() {
+    char nome_da_empresa[51];
+    float gastos[12];
+    float gastos_totais = 0;
+    float gastos_semestre_1 = 0;
+    float gastos_semestre_2 = 0;
+
+    const char *mes[] = {
+        "Janeiro", "Fevereiro", "Março", "Abril",
+        "Maio", "Junho", "Julho", "Agosto",
+        "Setembro", "Outubro", "Novembro", "Dezembro"
+    };
+
+    printf("Digite o nome da empresa: ");
+    scanf(" %50[^\n]", nome_da_empresa);
+
+    for (int x = 0; x < 12; x++) {
+        printf("Digite os gastos de %s: ", mes[x]);
+        scanf("%f", &gastos[x]);
+        gastos_totais += gastos[x];
+
+        if (x < 6) {
+            gastos_semestre_1 += gastos[x];
+        } else {
+            gastos_semestre_2 += gastos[x];
+        }
+    }
+
+    printf("\nRelatório da empresa %s:\n", nome_da_empresa);
+
+    printf("Gastos mensais:\n");
+    for (int x = 0; x < 12; x++)
+        printf("%s: R$%.2f\n", mes[x], gastos[x]);
+
+    printf("Gastos semestrais:\n");
+    printf("Primeiro Semestre: R$%.2f\n", gastos_semestre_1);
+    printf("Segundo Semestre: R$%.2f\n", gastos_semestre_2);
+    printf("Total de Gastos do Ano: R$%.2f\n", gastos_totais);
+}
+
+int realizarLogin() {
+    char Login[50], Senha[50];
+
+    printf("\nLogin:\n");
+    printf("Usuário: ");
+    scanf("%s", Login);
+    printf("Senha: ");
+    scanf("%s", Senha);
+
+    for (int i = 0; i < MAX_USUARIOS; i++) {
+        if (strcmp(Login, usuarios[i].Login) == 0 && strcmp(Senha, usuarios[i].Senha) == 0) {
+            printf("Bem-vindo, %s!\n", Login);
+            return 1;
+        }
+    }
+    printf("Login ou senha incorretos.\n");
+    return 0;
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese_Brazil");
+
+    printf("Bem vindo a Eco Devs\n");
+
+    int opcao;
+
+    if (!realizarLogin()) {
+        printf("Encerrando o programa.\n");
+        return 1;
+    }
+
+    do {
+        printf("\nMenu:\n");
+        printf("1. Cadastrar Empresa\n");
+        printf("2. Exibir Empresas\n");
+        printf("3. Calcular Gastos\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar(); // Limpa o buffer do teclado
+
+        switch (opcao) {
+            case 1:
+                cadastrarEmpresa(empresas, &totalEmpresas);
+                break;
+            case 2:
+                exibirEmpresas(empresas, totalEmpresas);
+                break;
+            case 3:
+                calcularGastos();
+                break;
+            case 0:
+                printf("Saindo do sistema...\n");
+                break;
+            default:
+                printf("Opção inválida!\n");
+        }
+    } while (opcao != 0);
+
+    return 0;
+}
